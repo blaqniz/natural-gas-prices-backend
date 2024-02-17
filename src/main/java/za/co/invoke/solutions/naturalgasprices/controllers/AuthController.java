@@ -1,17 +1,24 @@
 package za.co.invoke.solutions.naturalgasprices.controllers;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import za.co.invoke.solutions.naturalgasprices.dto.*;
-import za.co.invoke.solutions.naturalgasprices.services.AuthService;
-
-import java.util.List;
-
 import static za.co.invoke.solutions.naturalgasprices.util.GasPriceHelper.getXTokenAndSTSHeaders;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import za.co.invoke.solutions.naturalgasprices.dto.GenericResponse;
+import za.co.invoke.solutions.naturalgasprices.dto.JwtTokenResponse;
+import za.co.invoke.solutions.naturalgasprices.dto.UserDto;
+import za.co.invoke.solutions.naturalgasprices.dto.VerifyTokenRequest;
+import za.co.invoke.solutions.naturalgasprices.dto.VerifyTokenResponse;
+import za.co.invoke.solutions.naturalgasprices.services.AuthService;
+
+@AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @Slf4j
 @RestController
@@ -19,10 +26,6 @@ import static za.co.invoke.solutions.naturalgasprices.util.GasPriceHelper.getXTo
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/token")
     public ResponseEntity<GenericResponse<JwtTokenResponse>> createJwtToken(@RequestBody final UserDto userDto) {

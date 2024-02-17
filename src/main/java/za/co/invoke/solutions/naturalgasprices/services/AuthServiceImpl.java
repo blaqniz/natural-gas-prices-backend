@@ -8,7 +8,7 @@ import za.co.invoke.solutions.naturalgasprices.entities.User;
 import za.co.invoke.solutions.naturalgasprices.exceptions.InvalidLoginCredentials;
 import za.co.invoke.solutions.naturalgasprices.repositories.UserRepository;
 
-import static za.co.invoke.solutions.naturalgasprices.constants.GasPriceConstants.INVALID_CREDENTIALS;
+import static za.co.invoke.solutions.naturalgasprices.constants.GasPriceConstants.LOGIN_FAILED;
 
 @Slf4j
 @Service
@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
         try {
             final String username = userDto.getUsername();
             final User user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new InvalidLoginCredentials(INVALID_CREDENTIALS));
+                    .orElseThrow(() -> new InvalidLoginCredentials(LOGIN_FAILED));
 
             boolean isLoginSuccessful = bCryptPasswordEncoder.matches(userDto.getPassword(), user.getPassword());
 
@@ -40,10 +40,10 @@ public class AuthServiceImpl implements AuthService {
                 log.info("Token generated successfully: {}", jwtTokenResponse.getTokenData().getToken());
                 return jwtTokenResponse;
             } else {
-                throw new InvalidLoginCredentials(INVALID_CREDENTIALS);
+                throw new InvalidLoginCredentials(LOGIN_FAILED);
             }
         } catch (InvalidLoginCredentials e) {
-            log.error(INVALID_CREDENTIALS, e);
+            log.error(LOGIN_FAILED, e);
             throw e;
         } catch (Exception e) {
             log.error("An error has occurred {}", e);
